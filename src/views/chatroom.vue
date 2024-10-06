@@ -19,6 +19,7 @@
         class="d-block text-center mx-auto mt-4"
         color="grey-darken-1"
         size="36"
+        :image="selfAvatarPath"
       ></v-avatar>
 
       <v-divider class="mx-3 my-5"></v-divider>
@@ -35,18 +36,18 @@
     <v-navigation-drawer width="244">
       <v-sheet
         color="grey-lighten-5"
-        height="128"
+        height="72"
         width="100%"
       ></v-sheet>
-
-      <v-list>
+      <ContactCardList v-if="isUserInfoLoaded"></ContactCardList>
+      <!-- <v-list>
         <v-list-item
           v-for="n in 5"
           :key="n"
           :title="`Item ${ n }`"
           link
         ></v-list-item>
-      </v-list>
+      </v-list> -->
     </v-navigation-drawer>
 
     <v-app-bar
@@ -75,10 +76,9 @@
       </v-responsive>
     </v-app-bar>
 
-    <v-main>
-      <chatFlow></chatFlow>
-
-    </v-main>
+      <v-main>
+              <ChatComponent :messages="messages"></ChatComponent>
+      </v-main>
 
     <v-navigation-drawer location="right">
       <v-list>
@@ -105,6 +105,7 @@
       flat
       hide-details
       placeholder="Type a message"
+      @keydown.enter="send"
     >
       <template v-slot:append>
         <v-btn flat @click="send" icon>
@@ -125,16 +126,23 @@
 
 import { useUserStore } from '@/store/user';
 import { useRouter } from 'vue-router';
-import  chatFlow from '@/components/messageFlow.vue'
-import { ref } from 'vue';
+import ChatComponent from '@/components/Chatcompnents.vue'
+import { ref ,onMounted} from 'vue';
 import EventBus from "@/EventBus.js";
+import getUserinfo from '@/api/getUserInfo';
+import { createPinia,getActivePinia } from 'pinia';
+import { getCurrentTime } from '@/utils';
+import ContactCardList from '@/components/ContactCardList.vue';
 
 const router = useRouter();
-const userStore = useUserStore();
+const PiniaInstance = getActivePinia() || createPinia()
+const userStore = useUserStore(PiniaInstance);
 const messageContent = ref('');
+const isUserInfoLoaded = ref(false);
+let selfAvatarPath = ref('');
+let messages = ref([]);
 
-
-
+// components = {ChatComponent}
 
 function Logout() {
   userStore.clearAll()
@@ -146,17 +154,46 @@ function Logout() {
 
 
 function send() {
-
-
-  //get message content
+  const text = messageContent.value
+  //build a msg 
+  const msg = {
+    message: text,
+    time: getCurrentTime(),
+    isSelf: true,
+    avatar: selfAvatarPath,
+  }
   //send message to server
 
-  EventBus.emit('addMessage',messageContent.value);
+  // if(sendMsg(text, 2)){
+
+
   
+  if(true){
+    // console.log(msg)  //  msg , useid
+    messages.value.push(msg)
+    console.log(messages.value)
+  } 
+
+
+  EventBus.emit('addMessage', messageContent.value);
+
   messageContent.value = '';
 
 }
 
+
+onMounted(()=> {
+  const userInfo = getUserinfo(true)
+  userStore.setUserInfo(userInfo)
+  console.log(userInfo)
+  //load Avatar
+  selfAvatarPath = userStore.getUserInfo()['avatar']
+
+  // 确保在用户信息加载完后才渲染ContactCardList
+  isUserInfoLoaded.value = true;
+
+  
+});
 </script>
 
 <style  scoped>
@@ -168,6 +205,11 @@ function send() {
   font-size: 24px;
 }
 
+.chat_container {
+  display: flex;
+  flex-direction: column;
+
+}
 
 
 </style>

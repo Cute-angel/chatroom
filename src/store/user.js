@@ -3,12 +3,14 @@ import { defineStore } from "pinia";
 export const useUserStore = defineStore("user", {
   state: () => ({
     token: localStorage.getItem("token") || "",
-    userInfo : JSON.parse(localStorage.getItem("userInfo"))||null
+    userInfo : JSON.parse(localStorage.getItem("userInfo"))||null,
+    friendSelected:localStorage.getItem('friendSelected')||null
   }),
   actions: {
     setToken(token) {
       localStorage.setItem("token", token);
       this.token = token;
+      return this.t
     },
     
     getToken() {
@@ -20,7 +22,7 @@ export const useUserStore = defineStore("user", {
       this.token = "";
     },
     
-    setUserInfo(userInfo) {
+    setUserInfo(userInfo) {  // userInfo should a dict
       /*
       userinfo: dict = {
         'friendLst' : [
@@ -54,11 +56,26 @@ export const useUserStore = defineStore("user", {
     },
     
     clearUserInfo() {
+      localStorage.removeItem('userInfo');
       this.userInfo = null;
     },
+
+    setFriendSelected(userId) {
+      this.friendSelected = userId
+      return this.friendSelected
+    },
+    
+    getFriendSelected(){
+      return this.friendSelected
+    },
+    
+
+
     clearAll() {
         this.removeToken();
         this.clearUserInfo();
+        this.friendSelected = null
+
     }  
   }
 });

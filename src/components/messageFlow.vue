@@ -13,8 +13,8 @@
 import ChatMessage from "@/components/message.vue"
 import {  onUnmounted,nextTick,ref, onMounted,  watch } from "vue";
 import EventBus from "@/EventBus.js";
-
-
+import { useUserStore } from "@/store/user";
+import { createPinia,getActivePinia } from 'pinia';
 
 export default {
     name: "MessageFlow",

@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useUserStore } from "@/store/user";
-
-async function send(msg, to) {
-    const token = useUserStore().getToken()
+import { getActivePinia,createPinia } from "pinia";
+async function sendMsg(msg, to) {
+    // 检查是否有活跃的 Pinia 实例
+    const piniaInstance = getActivePinia() || createPinia();
+    const token = useUserStore(piniaInstance).getToken()
 
     try {
         const response = await axios.post(
@@ -12,7 +14,8 @@ async function send(msg, to) {
                 token: token
             }
         )
-
+        // //debuger
+        // console.log(response.data)
         if (response.data == 'success') {
             return true
         }
@@ -24,4 +27,4 @@ async function send(msg, to) {
     }
 }
 
-export default send;
+export default sendMsg;

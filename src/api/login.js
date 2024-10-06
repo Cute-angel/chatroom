@@ -1,7 +1,7 @@
 import { SHA512 } from 'crypto-js'
 import { useUserStore } from '@/store/user';
 import axios from 'axios';
-import { getActivePinia,createPinia } from 'pinia';
+import { getActivePinia, createPinia } from 'pinia';
 
 async function login(username, password) {
 
@@ -25,11 +25,6 @@ async function login(username, password) {
             // 保存 token 到 store
             const userStore = useUserStore(piniaInstance);
             userStore.setToken(token);
-
-
-            // userStore.setUserInfo(username.value);
-
-            // 跳转到聊天房间
             return true;
         } else {
             return false;

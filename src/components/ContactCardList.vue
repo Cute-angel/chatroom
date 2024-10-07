@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <template v-for="(contact, index) in contacts">
-            <ContactCard :name="contact.name" :avatarUrl="contact.avatar" />
+            <ContactCard :name="contact.name" :avatarUrl="contact.avatar" :userId="contact.userId" />
             <v-divider class="mx-3" :class="divider"></v-divider>
         </template>
     </v-container>

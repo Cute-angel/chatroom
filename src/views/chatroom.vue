@@ -138,8 +138,6 @@ const isUserInfoLoaded = ref(false);
 let selfAvatarPath = ref('');
 let messages = ref([]);
 
-// components = {ChatComponent}
-
 function Logout() {
   userStore.clearAll()
   router.push({

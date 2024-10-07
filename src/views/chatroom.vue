@@ -40,14 +40,7 @@
         width="100%"
       ></v-sheet>
       <ContactCardList v-if="isUserInfoLoaded"></ContactCardList>
-      <!-- <v-list>
-        <v-list-item
-          v-for="n in 5"
-          :key="n"
-          :title="`Item ${ n }`"
-          link
-        ></v-list-item>
-      </v-list> -->
+
     </v-navigation-drawer>
 
     <v-app-bar
@@ -95,6 +88,7 @@
       height="72"
       app
     >
+    <toolbar></toolbar>
     <v-text-field
       v-model="messageContent"
       bg-color="grey-lighten-2"
@@ -133,6 +127,8 @@ import getUserinfo from '@/api/getUserInfo';
 import { createPinia,getActivePinia } from 'pinia';
 import { getCurrentTime } from '@/utils';
 import ContactCardList from '@/components/ContactCardList.vue';
+import toolbar from '@/components/toolbar.vue';
+
 
 const router = useRouter();
 const PiniaInstance = getActivePinia() || createPinia()

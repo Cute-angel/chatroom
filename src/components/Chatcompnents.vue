@@ -65,7 +65,7 @@
   
   <style scoped>
   .chat-box {
-    height: 80vh;
+    height: 75vh;
     overflow-y: auto;
     /* /* padding: 16px; */
     background-color: #f5f5f5;

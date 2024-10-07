@@ -19,7 +19,7 @@
             </v-card-text>
         </v-card>
         <!-- 错误提示 -->
-        <v-alert closable=ture close-delay="200" v-model="showError" type="error" dismissible class="mt-4">
+        <v-alert closable=ture close-delay="1" v-model="showError" type="error" dismissible class="mt-4">
             {{ errorMessage }}
         </v-alert>
         <v-alert  closable=true v-model="showSucces" type="sucess" dismissible class="mt-4">

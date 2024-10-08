@@ -9,8 +9,8 @@
 </template>
 
 <script>
-;
-import loginCard from '@/components/loginCard.vue';
+
+import loginCard from '@/components/LoginCard.vue';
 
 export default {
 

@@ -69,7 +69,7 @@ import sendMsg from '@/api/sendMsg';
   const PiniaInstance = getActivePinia() || createPinia()
   const userStore = useUserStore(PiniaInstance);
   const selfAvatarPath = userStore.getUserInfo['avatar']
-  const selectedUser = userStore.friendSelected
+  let selectedUser = userStore.friendSelected
 
   const showToolbar = ref(false);
   
@@ -111,8 +111,9 @@ import sendMsg from '@/api/sendMsg';
           time: getCurrentTime(),
           isSelf: true,
           avatar: selfAvatarPath,
+          userId:0
         }
-
+        selectedUser = userStore.friendSelected
         if(sendMsg(msg,selectedUser)){
           console.log(selectedUser) //?????
           userStore.msgsDict[selectedUser].push(msg)

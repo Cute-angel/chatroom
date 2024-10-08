@@ -21,10 +21,11 @@
               <p class="mb-1" style="white-space: pre-line">{{ message }}</p>
             </template>
             <template v-else-if="type === 'image'">
-              <v-img :src="message" max-width="100%"></v-img>
+              <v-img :src="message" max-width="100%" size="200px"></v-img>
             </template>
             <template v-else-if="type === 'location'">
-              <iframe :src="message" max-width="100%" height="200" frameborder="0" allowfullscreen></iframe><br>
+              <a :href="message">Location click to open</a><br>
+              <!-- <iframe :src="message" max-width="100%" height="200" frameborder="0" allowfullscreen style="transform: scale(1)"></iframe><br> -->
             </template>
             <!-- Time -->
             <small class="grey--text">{{ time }}</small>
@@ -45,7 +46,7 @@ import {ref} from 'vue'
 import { getSelectedUserName } from '@/api/getSelectedUserName';
 
 
-const  name = ref()
+let  name = ref()
 export default {
   name: "ChatMessage",
   props: {
@@ -67,7 +68,7 @@ export default {
     },
     type: {
 
-      // text , location , file , pic
+      // text , location , file , image
       type: String,
       default: 'text'
     },
@@ -78,8 +79,8 @@ export default {
   computed: {
     nameInitial() {
 
-
-      return this.name ? this.name.charAt(0).toUpperCase() : '';
+      name = getSelectedUserName(this.userId)
+      return name ? name.charAt(0).toUpperCase() : '';
     }
   },
 };

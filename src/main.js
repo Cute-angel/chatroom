@@ -12,7 +12,7 @@ import * as directives from 'vuetify/directives'
 import App from './App.vue'
 
 //icons
-import { aliases ,mdi } from 'vuetify/iconsets/mdi'
+import { aliases, mdi } from 'vuetify/iconsets/mdi'
 
 
 import '@mdi/font/css/materialdesignicons.css';
@@ -32,7 +32,7 @@ const vuetify = createVuetify({
   icons: {
     defaultSet: "mdi",
     aliases,
-    sets:{
+    sets: {
       mdi
     }
   }

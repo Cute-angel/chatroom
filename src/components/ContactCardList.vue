@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import ContactCard from './contactCard.vue';
+import ContactCard from '@/components/ContactCard.vue';
 import { ref, onMounted } from "vue"
 import { useUserStore } from '@/store/user';
 import { createPinia, getActivePinia } from 'pinia';
@@ -34,7 +34,6 @@ export default {
 </script>
 
 <style scoped>
-
 #diver1 {
     margin: 0px;
 }
@@ -42,6 +41,4 @@ export default {
 ContactCard {
     padding-top: 20px;
 }
-
-
 </style>

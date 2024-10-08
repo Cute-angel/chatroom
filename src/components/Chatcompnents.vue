@@ -5,12 +5,9 @@
         <div ref="chatContainer" class="chat-box">
           <transition-group name="msg-fade" tag="div" @after-enter="handleAfterEnter">
             <ChatMessage v-for="(msg, index) in messages" :key="index" :message="msg.message" :time="msg.time"
-              :isSelf="msg.isSelf" :avatar="msg.avatar" :type="msg.type" class="message-bubble" elevation="2" />
-
+              :isSelf="msg.isSelf" :avatar="msg.avatar" :type="msg.type" :user-id="msg.userId" :class="message - bubble"
+              elevation="2" />
           </transition-group>
-
-
-
         </div>
       </v-col>
     </v-row>
@@ -19,19 +16,14 @@
 
 <script>
 import { ref, onMounted, watch, onBeforeUnmount, nextTick } from "vue";
-import ChatMessage from "./message.vue";
+import ChatMessage from '@/components/Message.vue'
 import { getActivePinia, createPinia, storeToRefs } from "pinia";
 import { useUserStore } from "@/store/user";
 
 export default {
   components: { ChatMessage },
   name: "ChatComponent",
-  // props:{
-  //     messages:{
-  //         type: Array,
-  //         required: true,
-  //     },
-  // },
+
 
 
   setup(props) {
@@ -71,27 +63,27 @@ export default {
       window.removeEventListener('resize', adjustHeight)
     })
 
-    watch(
-      () => props.messages, // 正确解构 props 的 messages
-      () => {
-        scrollToBottom();
-      },
-      { deep: true }
+    // watch(
+    //   () => props.messages, // 正确解构 props 的 messages
+    //   () => {
+    //     scrollToBottom();
+    //   },
+    //   { deep: true }
 
-    );
+    // );
 
 
-    watch([friendSelected ,msgsDict], ([newFriendId, newmsgsDict]) => {
+    watch([friendSelected, msgsDict], ([newFriendId, newmsgsDict]) => {
       console.log(msgsDict.value[newFriendId])
       if (msgsDict.value[newFriendId]) {
         messages.value = msgsDict.value[newFriendId];
       } else {
         messages.value = []; // 如果没有消息，则显示空列表
       }
-    }, { immediate: true ,deep: true }
+    }, { immediate: true, deep: true }
     );
 
-    return { chatContainer, handleAfterEnter ,messages};
+    return { chatContainer, handleAfterEnter, messages };
   }
 };
 </script>

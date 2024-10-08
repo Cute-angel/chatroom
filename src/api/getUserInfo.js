@@ -11,19 +11,19 @@ function getUserinfo(debuger = false) {
 
                 },
                 {
-                    'name': "Bob",
-                    'avatar': "https://space.floxcat.work/images/pic.webp",
+                    'name': "吉伊",
+
                     'userId': 2
 
                 },
                 {
-                    'name': "玛嗯纳",
+                    'name': "哈奇",
 
                     'userId': 3
 
                 },
                 {
-                    'name': "TestUser",
+                    'name': "Team",
 
                     'userId': 4
 
@@ -35,7 +35,7 @@ function getUserinfo(debuger = false) {
 
         }
         return result
-    } else{
+    } else {
         //to do 
     }
 }

@@ -3,9 +3,9 @@ import { defineStore } from "pinia";
 export const useUserStore = defineStore("user", {
   state: () => ({
     token: localStorage.getItem("token") || "",
-    userInfo : JSON.parse(localStorage.getItem("userInfo"))||null,
-    friendSelected:localStorage.getItem('friendSelected')||null,
-    msgsDict:JSON.parse(localStorage.getItem('msgDict'))||null
+    userInfo: JSON.parse(localStorage.getItem("userInfo")) || null,
+    friendSelected: localStorage.getItem('friendSelected') || null,
+    msgsDict: JSON.parse(localStorage.getItem('msgDict')) || null
   }),
   actions: {
     setToken(token) {
@@ -13,7 +13,7 @@ export const useUserStore = defineStore("user", {
       this.token = token;
       return this.t
     },
-    
+
     getToken() {
       return this.token; // string
     },
@@ -22,7 +22,7 @@ export const useUserStore = defineStore("user", {
       localStorage.removeItem("token");
       this.token = "";
     },
-    
+
     setUserInfo(userInfo) {  // userInfo should a dict
       /*
       userinfo: dict = {
@@ -46,16 +46,16 @@ export const useUserStore = defineStore("user", {
       }
       */
       const stringUserInfo = JSON.stringify(userInfo);
-      localStorage.setItem("userInfo",stringUserInfo);
+      localStorage.setItem("userInfo", stringUserInfo);
       this.userInfo = userInfo;
       return this.userInfo; //is a dict
     },
-    
+
     getUserInfo() {
       return this.userInfo;
 
     },
-    
+
     clearUserInfo() {
       localStorage.removeItem('userInfo');
       this.userInfo = null;
@@ -65,11 +65,11 @@ export const useUserStore = defineStore("user", {
       this.friendSelected = userId
       return this.friendSelected
     },
-    
-    getFriendSelected(){
+
+    getFriendSelected() {
       return this.friendSelected
     },
-    
+
     setMsgDict(msgsDict) {  // userInfo should a dict
       /*
 
@@ -95,7 +95,7 @@ export const useUserStore = defineStore("user", {
         '2':[{msg1},{msg2}]
       */
       const stringMsgDict = JSON.stringify(msgsDict);
-      localStorage.setItem("msgDict",stringMsgDict);
+      localStorage.setItem("msgDict", stringMsgDict);
       this.msgsDict = msgsDict;
       return this.msgsDict; //is a dict
     },
@@ -103,17 +103,17 @@ export const useUserStore = defineStore("user", {
       return this.msgsDict
     },
 
-    removeMsgsDict () {
+    removeMsgsDict() {
       this.msgsDict = null
       localStorage.removeItem('msgDict')
     },
-    
-    clearAll() {
-        this.removeToken();
-        this.clearUserInfo();
-        this.removeMsgsDict();
-        this.friendSelected = null
 
-    }  
+    clearAll() {
+      this.removeToken();
+      this.clearUserInfo();
+      this.removeMsgsDict();
+      this.friendSelected = null
+
+    }
   }
 });

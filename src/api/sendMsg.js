@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useUserStore } from "@/store/user";
-import { getActivePinia,createPinia } from "pinia";
+import { getActivePinia, createPinia } from "pinia";
 async function sendMsg(msg, to) {
     // 检查是否有活跃的 Pinia 实例
     const piniaInstance = getActivePinia() || createPinia();

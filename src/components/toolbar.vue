@@ -55,9 +55,22 @@
     margin-right:4px;
   }
   </style>  
+
+
+
+
   <script setup>
   import { ref } from 'vue';
-  
+  import {createPinia, getActivePinia } from 'pinia';
+  import { useUserStore } from '@/store/user';
+  import { getCurrentTime } from '@/utils';
+import sendMsg from '@/api/sendMsg';
+
+  const PiniaInstance = getActivePinia() || createPinia()
+  const userStore = useUserStore(PiniaInstance);
+  const selfAvatarPath = userStore.getUserInfo['avatar']
+  const selectedUser = userStore.friendSelected
+
   const showToolbar = ref(false);
   
   const toggleToolbar = () => {
@@ -92,10 +105,18 @@
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
         const locationUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
-        const message = { type: 'location', content: locationUrl };
-        console.log(message)
-        // this.messages.push(message);
-        // 通过 WebSocket 发送位置链接到服务器
+        const msg = {
+          type:'location',
+          message: locationUrl,
+          time: getCurrentTime(),
+          isSelf: true,
+          avatar: selfAvatarPath,
+        }
+
+        if(sendMsg(msg,selectedUser)){
+          console.log(selectedUser) //?????
+          userStore.msgsDict[selectedUser].push(msg)
+        }
       });
   };
   </script>

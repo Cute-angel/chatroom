@@ -3,12 +3,6 @@
   <v-app id="inspire">
     <v-system-bar>
       <v-spacer></v-spacer>
-
-      <!-- <v-icon>mdi-square</v-icon>
-
-      <v-icon>mdi-circle</v-icon>
-
-      <v-icon>mdi-triangle</v-icon> -->
     </v-system-bar>
 
     <v-navigation-drawer
@@ -70,7 +64,7 @@
     </v-app-bar>
 
       <v-main>
-              <ChatComponent :messages="messages"></ChatComponent>
+              <ChatComponent :messages="messages" v-if="isUserInfoLoaded"></ChatComponent>
       </v-main>
 
     <v-navigation-drawer location="right">
@@ -82,6 +76,7 @@
           link
         ></v-list-item>
       </v-list>
+      <p>this will add a contactDetailCard(todo)</p>
     </v-navigation-drawer>
 
     <v-footer
@@ -121,13 +116,14 @@
 import { useUserStore } from '@/store/user';
 import { useRouter } from 'vue-router';
 import ChatComponent from '@/components/Chatcompnents.vue'
-import { ref ,onMounted} from 'vue';
-import EventBus from "@/EventBus.js";
+import { ref ,onMounted , watch} from 'vue';
 import getUserinfo from '@/api/getUserInfo';
 import { createPinia,getActivePinia } from 'pinia';
 import { getCurrentTime } from '@/utils';
 import ContactCardList from '@/components/ContactCardList.vue';
 import toolbar from '@/components/toolbar.vue';
+import { getMsglist } from '@/api/getMsg';
+import sendMsg from '@/api/sendMsg';
 
 
 const router = useRouter();
@@ -137,6 +133,7 @@ const messageContent = ref('');
 const isUserInfoLoaded = ref(false);
 let selfAvatarPath = ref('');
 let messages = ref([]);
+let messagesDict = ref({});
 
 function Logout() {
   userStore.clearAll()
@@ -151,43 +148,68 @@ function send() {
   const text = messageContent.value
   //build a msg 
   const msg = {
+    type:'text',
     message: text,
     time: getCurrentTime(),
     isSelf: true,
     avatar: selfAvatarPath,
   }
-  //send message to server
 
-  // if(sendMsg(text, 2)){
-
-
+    //send msg2server
   
-  if(true){
-    // console.log(msg)  //  msg , useid
-    messages.value.push(msg)
+
+
+  const selectedUser = userStore.getFriendSelected()
+  if(selectedUser){
+    if(sendMsg(text, selectedUser)){
+    
     console.log(messages.value)
-  } 
+
+    userStore.msgsDict[selectedUser].push(msg)
+    messageContent.value = '';
+    } 
+  } else{
+    console.warn('you need to choose a friend')
+  }
+  
 
 
-  EventBus.emit('addMessage', messageContent.value);
-
-  messageContent.value = '';
 
 }
 
 
 onMounted(()=> {
+  //loadUserInfo
   const userInfo = getUserinfo(true)
   userStore.setUserInfo(userInfo)
   console.log(userInfo)
   //load Avatar
   selfAvatarPath = userStore.getUserInfo()['avatar']
+  //getHistoryMsgs
+  for (var contactKey in userInfo['friendLst']) {
+    const contact = userInfo['friendLst'][contactKey]
+
+    const userId = contact['userId']
+    const msglist = getMsglist(userId,true)
+    // console.log(msglist)
+    messagesDict.value[userId.toString()] = msglist
+  }
+
+  // saveMsgsDict to localStorage
+  userStore.setMsgDict(messagesDict.value)
+  console.log(userStore.getMsgsDict())
 
   // 确保在用户信息加载完后才渲染ContactCardList
   isUserInfoLoaded.value = true;
 
   
 });
+
+
+watch(() => userStore.getFriendSelected(), 
+      () => {
+        // do something
+      },)
 </script>
 
 <style  scoped>
@@ -198,12 +220,12 @@ onMounted(()=> {
   visibility: visible;
   font-size: 24px;
 }
-
+/* 
 .chat_container {
   display: flex;
   flex-direction: column;
 
-}
+} */
 
 
 </style>

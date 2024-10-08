@@ -4,7 +4,8 @@ export const useUserStore = defineStore("user", {
   state: () => ({
     token: localStorage.getItem("token") || "",
     userInfo : JSON.parse(localStorage.getItem("userInfo"))||null,
-    friendSelected:localStorage.getItem('friendSelected')||null
+    friendSelected:localStorage.getItem('friendSelected')||null,
+    msgsDict:JSON.parse(localStorage.getItem('msgDict'))||null
   }),
   actions: {
     setToken(token) {
@@ -69,11 +70,48 @@ export const useUserStore = defineStore("user", {
       return this.friendSelected
     },
     
+    setMsgDict(msgsDict) {  // userInfo should a dict
+      /*
 
+      The '1' '2' refer userId
+      msgDict: dict = {
+        '1':[
+                {
+            type:'text',
+            message: text,
+            time: getCurrentTime(),
+            isSelf: true,
+            avatar: selfAvatarPath,
+          },
+                {
+          type:'text',
+          message: text,
+          time: getCurrentTime(),
+          isSelf: true,
+          avatar: selfAvatarPath,
+          }
+        
+        ],
+        '2':[{msg1},{msg2}]
+      */
+      const stringMsgDict = JSON.stringify(msgsDict);
+      localStorage.setItem("msgDict",stringMsgDict);
+      this.msgsDict = msgsDict;
+      return this.msgsDict; //is a dict
+    },
+    getMsgsDict() {
+      return this.msgsDict
+    },
 
+    removeMsgsDict () {
+      this.msgsDict = null
+      localStorage.removeItem('msgDict')
+    },
+    
     clearAll() {
         this.removeToken();
         this.clearUserInfo();
+        this.removeMsgsDict();
         this.friendSelected = null
 
     }  

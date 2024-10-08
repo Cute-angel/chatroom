@@ -5,7 +5,8 @@
       <v-col cols="12" class="d-flex" :class="{ 'justify-end': isSelf }">
         <!-- 他人发的消息，头像在左 -->
         <v-avatar v-if="!isSelf" size="40" class="mr-2">
-          <v-img :src="avatar" />
+          <img v-if="avatar" :src="avatar" alt="avatar" style="object-fit: cover; width: 100%; height: 100%; margin-top:3px;margin-bottom :3px" />
+          <v-avatar v-else color="primary" class="white--text" >{{ nameInitial }}</v-avatar>
         </v-avatar>
 
         <!-- 消息气泡 -->
@@ -14,10 +15,18 @@
           'mr-2': !isSelf,
           'pa-3': true,
           'align-self-end': true
-        }" :color="isSelf ? 'blue lighten-4' : 'grey lighten-3'"
-          :style="{ maxWidth: '75%', wordBreak: 'break-word' }">
+        }" :color="isSelf ? 'blue lighten-4' : 'grey lighten-3'" :style="{ maxWidth: '75%', wordBreak: 'break-word' }">
           <v-card-text class="py-1 px-3">
-            <p class="mb-1" style="white-space: pre-line">{{ message }}</p>
+            <template v-if="type === 'text'">
+              <p class="mb-1" style="white-space: pre-line">{{ message }}</p>
+            </template>
+            <template v-else-if="type === 'image'">
+              <v-img :src="message" max-width="100%"></v-img>
+            </template>
+            <template v-else-if="type === 'location'">
+              <iframe :src="message" max-width="100%" height="200" frameborder="0" allowfullscreen></iframe><br>
+            </template>
+            <!-- Time -->
             <small class="grey--text">{{ time }}</small>
           </v-card-text>
         </v-card>
@@ -32,6 +41,11 @@
 </template>
 
 <script>
+import {ref} from 'vue'
+import { getSelectedUserName } from '@/api/getSelectedUserName';
+
+
+const  name = ref()
 export default {
   name: "ChatMessage",
   props: {
@@ -51,6 +65,22 @@ export default {
       type: String,
       required: true,
     },
+    type: {
+
+      // text , location , file , pic
+      type: String,
+      default: 'text'
+    },
+    userId:{
+      
+    }
+  },
+  computed: {
+    nameInitial() {
+
+
+      return this.name ? this.name.charAt(0).toUpperCase() : '';
+    }
   },
 };
 </script>

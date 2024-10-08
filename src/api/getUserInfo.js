@@ -15,9 +15,21 @@ function getUserinfo(debuger = false) {
                     'avatar': "https://space.floxcat.work/images/pic.webp",
                     'userId': 2
 
+                },
+                {
+                    'name': "玛嗯纳",
+
+                    'userId': 3
+
+                },
+                {
+                    'name': "TestUser",
+
+                    'userId': 4
+
                 }
             ],
-            'userId': 10,
+            'userId': 0,
             'avatar': 'https://space.floxcat.work/images/pic.webp',
             'name': "usagi"
 

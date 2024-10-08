@@ -59,10 +59,10 @@ export default {
     const  changeStyle= () => {
 
       if (props.userId.toString() == userStore.getFriendSelected()){
-          console.log('T')
+
           isFocused.value = true
       } else{
-        console.log('F')
+
         isFocused.value = false
       }
 
@@ -102,6 +102,7 @@ v-card {
 /* 
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); */
   background-color: #f0f0f0;
+  color: rgb(71, 131, 221);
 }
 
 .Contact {

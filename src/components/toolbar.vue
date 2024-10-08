@@ -21,6 +21,12 @@
               <v-icon>mdi-file</v-icon>
             </v-list-item-icon>
           </v-list-item>
+
+          <v-list-item @click="seletLocation">
+            <v-list-item-icon>
+              <v-icon>mdi-map-marker-radius-outline</v-icon>
+            </v-list-item-icon>
+          </v-list-item>
         </v-list>
 
       </v-menu>
@@ -79,5 +85,17 @@
       console.log(file);
     };
     input.click();
+  };
+
+  const seletLocation = () => {
+    navigator.geolocation.getCurrentPosition((position) => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        const locationUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
+        const message = { type: 'location', content: locationUrl };
+        console.log(message)
+        // this.messages.push(message);
+        // 通过 WebSocket 发送位置链接到服务器
+      });
   };
   </script>

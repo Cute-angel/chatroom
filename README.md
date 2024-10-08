@@ -1,6 +1,17 @@
 # chatroom
 
-This template should help get you started developing with Vue 3 in Vite.
+功能
+
+- 登录
+- 登出
+- 发文字信息
+- 发定位
+- 发图片的ui 
+- 发文件的ui
+- 本地消息缓存
+- 路由守卫(未登录直接访问 跳转登录)
+- setting page （todo
+- 未读信息下标 （todo
 
 ## Recommended IDE Setup
 

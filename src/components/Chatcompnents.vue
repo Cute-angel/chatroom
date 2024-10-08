@@ -97,16 +97,22 @@ export default {
   /* border-radius: 8px;  */
   flex-grow: 1;
 }
-
+.msg-fadet-move,
 .msg-fade-enter,
 .msg-fade-leave-active {
-  transition: opacity 0.1s;
+  transition: all 0.25s;
   transform: 0.2s;
 }
 
 .msg-fade-enter,
 .msg-fade-leave-to {
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateX(30px);
 }
+
+.msg-fade-active {
+  position: absolute;
+}
+
+
 </style>
